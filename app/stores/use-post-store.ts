@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { Post } from '~/type';
 
-export function selectByIds<T = any>(
+export function selectByIds<T = never>(
   ids: string[],
   entities: { [key: string]: T | undefined }
 ): T[] {
@@ -28,6 +28,7 @@ export const usePostStore = create(
     setPost: post =>
       set(state => {
         state.entities[post.id] = post;
+        if (state.ids.includes(post.id)) return;
         state.ids = Array.from(new Set([post.id].concat(state.ids)));
       }),
     setPosts: posts =>

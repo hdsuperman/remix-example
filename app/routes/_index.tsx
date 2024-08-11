@@ -1,4 +1,6 @@
-import type { MetaFunction } from "@remix-run/node";
+import { json, MetaFunction } from '@remix-run/node';
+import { Link, useLoaderData } from '@remix-run/react';
+import { Post } from '~/type';
 
 export const meta: MetaFunction = () => {
   return [
@@ -7,42 +9,38 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export const loader = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  return json<Post[]>([
+    { id: '1', title: 'Post 1 from server loader' },
+    { id: '2', title: 'Post 2 from server loader' },
+    { id: '3', title: 'Post 3 from server loader' },
+  ]);
+}
+
+export const clientLoader = async () => {
+  return [
+    { id: '1', title: 'Post 1 from client loader' },
+    { id: '2', title: 'Post 2 from client loader' },
+    { id: '3', title: 'Post 3 from client loader' },
+  ]
+}
+
 export default function Index() {
+  const posts = useLoaderData<typeof loader>();
+
   return (
-    <div className="font-sans p-4">
-      <h1 className="text-3xl">Welcome to Remix</h1>
-      <ul className="list-disc mt-4 pl-6 space-y-2">
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/start/quickstart"
-            rel="noreferrer"
-          >
-            5m Quick Start
-          </a>
-        </li>
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/start/tutorial"
-            rel="noreferrer"
-          >
-            30m Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            className="text-blue-700 underline visited:text-purple-900"
-            target="_blank"
-            href="https://remix.run/docs"
-            rel="noreferrer"
-          >
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+    <div className="font-sans p-24">
+      <h1 className="text-2xl mb-4">
+        Home Page
+      </h1>
+      <div className="flex flex-col">
+        {posts.map(p => (
+          <Link className="underline" to={`/posts/${p.id}`} key={p.id}>
+            {p.title}
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

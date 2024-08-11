@@ -2,7 +2,7 @@ import { json, MetaFunction } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import { Post } from '~/type';
 import { useQuery } from '@tanstack/react-query';
-import { selectByIds, usePosts, usePostStore } from '~/stores/use-post-store';
+import { usePosts, usePostStore } from '~/stores/use-post-store';
 
 export const meta: MetaFunction = () => {
   return [

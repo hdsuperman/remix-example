@@ -34,15 +34,26 @@ export function ThemeProvider({ children }: Props) {
       case 'light': {
         setTheme('light');
         setCookieTheme('light');
+        document.documentElement.classList.remove('dark');
         break;
       }
       case 'dark': {
         setTheme('dark');
         setCookieTheme('dark');
+        document.documentElement.classList.add('dark');
         break;
       }
-      default:
-        setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      default: {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+        setTheme(systemTheme);
+        if (systemTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else if (systemTheme === 'light') {
+          document.documentElement.classList.remove('dark');
+        }
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

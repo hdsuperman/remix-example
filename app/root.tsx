@@ -13,6 +13,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import cookie from 'cookie';
 import i18next, { changeLanguage } from './i18n';
 import { I18nextProvider } from 'react-i18next';
+import { ThemeProvider } from '@/theme';
 
 function createQueryClient() {
   return new QueryClient({
@@ -32,7 +33,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const acceptLanguage = request.headers.get('Accept-Language')?.split(',')[0];
   const lang = i18nextCookie ?? acceptLanguage ?? 'en';
   await changeLanguage(lang);
-  return { lang, theme: parsed.theme ?? 'light' };
+  return { lang, theme: parsed.theme };
 };
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -48,9 +49,11 @@ export function Layout({ children }: { children: ReactNode }) {
         <Links />
       </head>
       <body>
-        <I18nextProvider i18n={i18next}>
-          <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-        </I18nextProvider>
+        <ThemeProvider>
+          <I18nextProvider i18n={i18next}>
+            <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+          </I18nextProvider>
+        </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

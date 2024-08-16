@@ -4,6 +4,7 @@ import invariant from 'tiny-invariant';
 import { useQuery } from '@tanstack/react-query';
 import type { Post } from '@/type';
 import { usePostById, usePostStore } from '@/stores/use-post-store';
+import { useTranslation } from 'react-i18next';
 
 export const loader = async ({ params }: LoaderFunctionArgs): Promise<Post> => {
   invariant(params.postId, 'postId is required');
@@ -22,6 +23,7 @@ export const clientLoader = async ({ params }: ClientLoaderFunctionArgs): Promis
 };
 
 export default function Post() {
+  const { t } = useTranslation('common');
   const params = useParams<{ postId: string }>();
   const postFromLoader = useLoaderData<typeof loader>();
   const setPost = usePostStore((s) => s.setPost);
@@ -49,6 +51,7 @@ export default function Post() {
       </div>
       <div>Post from loader: {postFromLoader.title}</div>
       <div>Display post: {post.title}</div>
+      <div>i18n: {t('app.name')}</div>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { Link, useLoaderData } from '@remix-run/react';
 import { Post } from '@/type';
 import { useQuery } from '@tanstack/react-query';
 import { usePosts, usePostStore } from '@/stores/use-post-store';
+import { useTranslation } from 'react-i18next';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'New Remix App' }, { name: 'description', content: 'Welcome to Remix!' }];
@@ -23,6 +24,7 @@ export const clientLoader = async () => {
 };
 
 export default function Index() {
+  const { t } = useTranslation('common');
   const setPosts = usePostStore((s) => s.setPosts);
   const postListFromLoader = useLoaderData<typeof loader>();
 
@@ -64,6 +66,7 @@ export default function Index() {
             </Link>
           ))}
         </div>
+        <div>i18n: {t('app.name')}</div>
       </div>
     </div>
   );

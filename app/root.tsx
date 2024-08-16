@@ -10,6 +10,9 @@ import {
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { ReactNode, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { I18nextProvider } from 'react-i18next';
+import cookie from 'cookie';
+import i18next from './i18n';
 
 function createQueryClient() {
   return new QueryClient({
@@ -24,9 +27,12 @@ function createQueryClient() {
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const cookie = request.headers.get('Cookie');
-  console.log('cookie:', cookie);
-  return { lang: 'en', theme: 'dark' };
+  const parsed = cookie.parse(request.headers.get('Cookie') ?? '');
+  const i18nextCookie = parsed.i18next;
+  const acceptLanguage = request.headers.get('Accept-Language')?.split(',')[0];
+  const lang = i18nextCookie ?? acceptLanguage ?? 'en';
+  await i18next.changeLanguage(lang);
+  return { lang: 'en', theme: parsed.theme ?? 'light' };
 };
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -42,7 +48,9 @@ export function Layout({ children }: { children: ReactNode }) {
         <Links />
       </head>
       <body>
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        <I18nextProvider i18n={i18next}>
+          <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        </I18nextProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

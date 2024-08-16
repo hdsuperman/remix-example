@@ -20,4 +20,8 @@ i18next
   })
   .then(() => console.log('i18next initialized'));
 
+export async function changeLanguage(lng: string) {
+  await i18next.changeLanguage(lng);
+}
+
 export default i18next;

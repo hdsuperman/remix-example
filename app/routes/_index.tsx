@@ -4,6 +4,8 @@ import { Post } from '@/type';
 import { useQuery } from '@tanstack/react-query';
 import { usePosts, usePostStore } from '@/stores/use-post-store';
 import { useTranslation } from 'react-i18next';
+import ThemeSelector from '@/components/theme-selector';
+import LanguageSelector from '@/components/language-selector';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'New Remix App' }, { name: 'description', content: 'Welcome to Remix!' }];
@@ -67,6 +69,8 @@ export default function Index() {
           ))}
         </div>
         <div>i18n: {t('app.name')}</div>
+        <ThemeSelector />
+        <LanguageSelector />
       </div>
     </div>
   );

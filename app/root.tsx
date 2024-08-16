@@ -11,7 +11,7 @@ import { LoaderFunctionArgs } from '@remix-run/node';
 import { ReactNode, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import cookie from 'cookie';
-import i18next from './i18n';
+import i18next, { changeLanguage } from './i18n';
 import { I18nextProvider } from 'react-i18next';
 
 function createQueryClient() {
@@ -31,8 +31,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const i18nextCookie = parsed.i18next;
   const acceptLanguage = request.headers.get('Accept-Language')?.split(',')[0];
   const lang = i18nextCookie ?? acceptLanguage ?? 'en';
-  await i18next.changeLanguage(lang);
-  return { lang: 'en', theme: parsed.theme ?? 'light' };
+  await changeLanguage(lang);
+  return { lang, theme: parsed.theme ?? 'light' };
 };
 
 export function Layout({ children }: { children: ReactNode }) {

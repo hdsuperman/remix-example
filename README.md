@@ -44,3 +44,10 @@ msw
 ```shell
 npx msw init ./public
 ```
+
+## TODOS
+- i18n
+- theme
+- ScrollRestoration
+- ErrorBoundary
+- LiveReload

@@ -10,9 +10,9 @@ import {
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { ReactNode, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { I18nextProvider } from 'react-i18next';
 import cookie from 'cookie';
 import i18next from './i18n';
+import { I18nextProvider } from 'react-i18next';
 
 function createQueryClient() {
   return new QueryClient({

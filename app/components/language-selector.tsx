@@ -1,3 +1,3 @@
 export default function LanguageSelector() {
-  return null;
+  return <div />;
 }

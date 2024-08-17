@@ -4,7 +4,7 @@ import { createContext, ReactNode, useContext, useEffect, useMemo, useState } fr
 import { serialize } from 'cookie';
 import { useRouteLoaderData } from '@remix-run/react';
 
-export type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark' | 'system';
 
 export interface ThemeContextValue {
   theme: Theme;
@@ -19,6 +19,10 @@ export function useTheme() {
 
 function setCookieTheme(theme: Theme) {
   document.cookie = serialize('theme', theme, { path: '/', secure: true });
+}
+
+function removeCookieTheme() {
+  document.cookie = serialize('theme', '', { path: '/', secure: true, maxAge: -1 });
 }
 
 interface Props {
@@ -44,10 +48,11 @@ export function ThemeProvider({ children }: Props) {
         break;
       }
       default: {
+        setTheme('system');
+        removeCookieTheme();
         const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
           ? 'dark'
           : 'light';
-        setTheme(systemTheme);
         if (systemTheme === 'dark') {
           document.documentElement.classList.add('dark');
         } else if (systemTheme === 'light') {
@@ -58,18 +63,34 @@ export function ThemeProvider({ children }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const value = useMemo(
+  const value = useMemo<ThemeContextValue>(
     () => ({
       theme,
       changeTheme: (newTheme: Theme) => {
         if (newTheme === 'dark' && !document.documentElement.classList.contains('dark')) {
+          setTheme(newTheme);
+          setCookieTheme(newTheme);
           document.documentElement.classList.add('dark');
+          return;
         }
         if (newTheme === 'light' && document.documentElement.classList.contains('dark')) {
+          setTheme(newTheme);
+          setCookieTheme(newTheme);
           document.documentElement.classList.remove('dark');
+          return;
         }
-        setTheme(newTheme);
-        setCookieTheme(newTheme);
+        if (newTheme === 'system') {
+          setTheme(newTheme);
+          removeCookieTheme();
+          const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+          if (systemTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else if (systemTheme === 'light') {
+            document.documentElement.classList.remove('dark');
+          }
+        }
       },
     }),
     [theme]

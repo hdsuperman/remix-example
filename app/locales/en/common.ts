@@ -5,6 +5,7 @@ export default {
   theme: {
     light: 'Light Mode',
     dark: 'Dark Mode',
+    system: 'Sync with System',
   },
   lang: {
     zh: '中文',

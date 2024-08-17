@@ -7,11 +7,12 @@ export default function ThemeSelector() {
   return (
     <select
       defaultValue={theme}
-      className="p-2 block"
+      className="p-2 block border rounded-xl mt-3"
       onChange={(e) => changeTheme(e.target.value as Theme)}
     >
       <option value="dark">{t('theme.dark')}</option>
       <option value="light">{t('theme.light')}</option>
+      <option value="system">{t('theme.system')}</option>
     </select>
   );
 }

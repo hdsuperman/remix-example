@@ -33,7 +33,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const acceptLanguage = request.headers.get('Accept-Language')?.split(',')[0];
   const lang = i18nextCookie ?? acceptLanguage ?? 'en';
   await changeLanguage(lang);
-  return { lang, theme: parsed.theme };
+  return { lang, theme: parsed.theme ?? 'system' };
 };
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -41,7 +41,7 @@ export function Layout({ children }: { children: ReactNode }) {
   const data = useRouteLoaderData<typeof loader>('root');
 
   return (
-    <html lang={data?.lang} className={data?.theme}>
+    <html lang={data?.lang} className={data?.theme === 'dark' ? 'dark' : ''}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

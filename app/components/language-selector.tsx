@@ -7,7 +7,7 @@ export default function LanguageSelector() {
   const data = useRouteLoaderData<{ lang: string }>('root');
   return (
     <select
-      className="p-2 block"
+      className="p-2 block border rounded-xl mt-3"
       defaultValue={data?.lang}
       onChange={async (e) => {
         await changeLanguage(e.target.value);

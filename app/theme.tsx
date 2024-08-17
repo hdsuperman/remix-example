@@ -27,7 +27,7 @@ interface Props {
 
 export function ThemeProvider({ children }: Props) {
   const data = useRouteLoaderData<{ theme: Theme }>('root');
-  const [theme, setTheme] = useState<Theme>(data?.theme ?? 'light');
+  const [theme, setTheme] = useState<Theme>(data?.theme ?? 'system');
 
   const value = useMemo<ThemeContextValue>(
     () => ({
@@ -63,6 +63,16 @@ export function ThemeProvider({ children }: Props) {
     value.changeTheme(data?.theme ?? 'system');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-color-scheme: dark)');
+    const listener = () => {
+      if (value.theme !== 'system') return;
+      value.changeTheme('system');
+    };
+    query.addEventListener('change', listener);
+    return () => query.removeEventListener('change', listener);
+  }, [value]);
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

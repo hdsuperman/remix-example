@@ -10,8 +10,7 @@ import {
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { ReactNode } from 'react';
 import cookie from 'cookie';
-import { I18nextProvider } from 'react-i18next';
-import i18next, { changeLanguage } from '@/i18n';
+import { I18nProvider, changeLanguage } from '@/i18n';
 import { ThemeProvider } from '@/theme';
 import { QueryProvider } from '@/query';
 
@@ -37,9 +36,9 @@ export function Layout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ThemeProvider>
-          <I18nextProvider i18n={i18next}>
+          <I18nProvider>
             <QueryProvider>{children}</QueryProvider>
-          </I18nextProvider>
+          </I18nProvider>
         </ThemeProvider>
         <ScrollRestoration />
         <Scripts />

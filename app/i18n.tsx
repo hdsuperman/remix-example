@@ -1,8 +1,9 @@
 import i18next from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import { initReactI18next, I18nextProvider } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import en from '@/locales/en';
 import zh from '@/locales/zh';
+import { ReactNode } from 'react';
 
 export const resources = { en, zh } as const;
 export const defaultNS = 'common';
@@ -26,4 +27,6 @@ export async function changeLanguage(lng: string) {
   await i18next.changeLanguage(lng);
 }
 
-export default i18next;
+export function I18nProvider({ children }: { children: ReactNode }) {
+  return <I18nextProvider i18n={i18next}>{children}</I18nextProvider>;
+}

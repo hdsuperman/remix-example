@@ -8,24 +8,12 @@ import {
   useRouteLoaderData,
 } from '@remix-run/react';
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { ReactNode, useState } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactNode } from 'react';
 import cookie from 'cookie';
-import i18next, { changeLanguage } from './i18n';
 import { I18nextProvider } from 'react-i18next';
+import i18next, { changeLanguage } from '@/i18n';
 import { ThemeProvider } from '@/theme';
-
-function createQueryClient() {
-  return new QueryClient({
-    defaultOptions: {
-      queries: {
-        // With SSR, we usually want to set some default staleTime
-        // above 0 to avoid refetching immediately on the client
-        staleTime: 60 * 1000,
-      },
-    },
-  });
-}
+import { QueryProvider } from '@/query';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const parsed = cookie.parse(request.headers.get('Cookie') ?? '');
@@ -37,7 +25,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export function Layout({ children }: { children: ReactNode }) {
-  const [queryClient] = useState(createQueryClient);
   const data = useRouteLoaderData<typeof loader>('root');
 
   return (
@@ -51,7 +38,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <body>
         <ThemeProvider>
           <I18nextProvider i18n={i18next}>
-            <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+            <QueryProvider>{children}</QueryProvider>
           </I18nextProvider>
         </ThemeProvider>
         <ScrollRestoration />

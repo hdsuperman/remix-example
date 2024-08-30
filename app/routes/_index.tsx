@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import ThemeSelector from '@/components/theme-selector';
 import LanguageSelector from '@/components/language-selector';
 import { HomeIcon } from '@heroicons/react/24/outline';
+import GoogleIcon from './google-plain.svg';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'New Remix App' }, { name: 'description', content: 'Welcome to Remix!' }];
@@ -53,8 +54,9 @@ export default function Index() {
 
   return (
     <div className="font-sans p-24">
-      <h1 className="text-2xl mb-4">
-        <HomeIcon className="h-6 w-6" />
+      <h1 className="text-2xl mb-4 flex items-center">
+        <HomeIcon className="size-6" />
+        <GoogleIcon className="size-6" />
         Home Page
       </h1>
       <div>

@@ -1,5 +1,3 @@
-'use client';
-
 import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { serialize } from 'cookie';
 import { useRouteLoaderData } from '@remix-run/react';

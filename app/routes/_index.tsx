@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import ThemeSelector from '@/components/theme-selector';
 import LanguageSelector from '@/components/language-selector';
 import { HomeIcon } from '@heroicons/react/24/outline';
-import GoogleIcon from './google-plain.svg';
+import GoogleIcon from '../assets/google-plain.svg';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'New Remix App' }, { name: 'description', content: 'Welcome to Remix!' }];
